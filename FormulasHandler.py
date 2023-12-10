@@ -5,7 +5,6 @@ import importlib
 # Handles all main logic for the calculation and saving the Formulas.
 # @excel_input ExcelInput - handles getting data from excel files.
 # @excel_output ExcelOutput - handles saving calculated data to file.
-# TODO change formulas from [] to {}
 class FormulasHandler:
     def __init__(self, excel_input, excel_output):
         self.formulas = {}
