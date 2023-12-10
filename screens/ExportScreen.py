@@ -9,7 +9,6 @@ class ExportScreen(ctk.CTkFrame):
     def __init__(self, window, formulas_handler):
         super().__init__(window, width=800, height=400)
 
-        self.name = "export"
         self.window = window
         self.formulas_handler = formulas_handler
 

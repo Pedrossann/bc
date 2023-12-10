@@ -7,7 +7,6 @@ import importlib
 # @param CTkFrame parent - parent for the frame
 # @formulas_handler FormulasHandler
 # @excel_input ExcelInput - gets data from excel files.
-# TODO repair screenNames
 class Body(ctk.CTkFrame):
     def __init__(self, parent, formulas_handler, excel_input):
         super().__init__(parent)

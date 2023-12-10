@@ -14,7 +14,6 @@ class ImportScreen(ctk.CTkFrame):
 
         self.excel_input = window.excel_input
 
-        self.name = "import"
         self.variable_info = {}
 
         self.specific_variable_frame = {}
