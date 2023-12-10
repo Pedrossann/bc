@@ -8,33 +8,33 @@ import importlib
 # TODO change formulas from [] to {}
 class FormulasHandler:
     def __init__(self, excel_input, excel_output):
-        self.formulas = []
+        self.formulas = {}
         self.excel_input = excel_input
         self.excel_output = excel_output
 
     # Saves to formulas which formulas we need for calculation and creates map structure in excel_output.
     # @switch_states {"formula_name": True/False}
     def switches_wanted_formulas(self, switch_states):
-        for formula in self.formulas:
-            formula.wanted = switch_states[formula.name]
+        for name in list(self.formulas.keys()):
+            self.formulas[name].wanted = switch_states[name]
         self.excel_output.create_saving_structure(self.get_wanted_formulas())
 
     # Returns all the formulas needed for calculation.
     # @return [Formulas] - wanted formulas.
     def get_wanted_formulas(self):
         wanted_formulas = []
-        for formula in self.formulas:
-            if formula.wanted:
-                wanted_formulas.append(formula)
+        for name in list(self.formulas.keys()):
+            if self.formulas[name].wanted:
+                wanted_formulas.append(self.formulas[name])
         return wanted_formulas
 
     # Loads all variables, that are needed for calculating all selected formulas.
     # TODO oddělat a nahradit get_wanted_formulas
     def get_all_needed_data_names(self) -> [str]:
         needed_data = []
-        for formula in self.formulas:
-            if formula.wanted == True:
-                for variable in list(formula.variables.keys()):
+        for name in list(self.formulas.keys()):
+            if self.formulas[name].wanted == True:
+                for variable in list(self.formulas[name].variables.keys()):
                     needed_data.append(variable)
 
         return needed_data
@@ -42,8 +42,8 @@ class FormulasHandler:
     # @return [str] - all variable names.
     def get_all_variable_names(self) -> [str]:
         variables = []
-        for formula in self.formulas:
-            for variable in list(formula.variables.keys()):
+        for name in list(self.formulas.keys()):
+            for variable in list(self.formulas[name].variables.keys()):
                 variables.append(variable)
         return variables
 
@@ -53,28 +53,23 @@ class FormulasHandler:
     def create_formulas(self, frame) -> [object]:
         for formula_name in os.listdir("formulas"):
             if formula_name.endswith(".py"):
-                self.formulas.append(
-                    getattr(
-                        importlib.import_module(
-                            "formulas." + formula_name.split(".py")[0]
-                        ),
-                        formula_name.split(".")[0],
-                    )(frame)
-                )
+                self.formulas[formula_name] = getattr(
+                    importlib.import_module("formulas." + formula_name.split(".py")[0]),
+                    formula_name.split(".")[0],
+                )(frame)
         return self.formulas
 
     # Searches and returns forula based on given name.
     # @name String - name of the formula.
     # @return String/None - found formula.
     def get_formula_by_name(self, name):
-        for formula in self.formulas:
-            if formula.name == name:
-                return formula
+        for name in list(self.formulas.keys()):
+            if self.formulas[name] == name:
+                return self.formulas[name]
         return None
 
     # Gets all excel files in inport folder.
     # @return [String] - Names of the files without ".xlsx".
-    # TODO maybe return names with ".xlsx"
     def get_import_excel_names(self):
         excel_names = []
         for excel in os.listdir("input"):

@@ -40,8 +40,8 @@ class ChooseScreen(ctk.CTkFrame):
     # Gets the data(on = true/ off = false) of the switches and saves chosed formulas into the math handler.
     def get_states_of_formulas(self):
         states = {}
-        for formula in self.formulas_handler.formulas:
-            states[formula.name] = formula.switch
+        for name in list(self.formulas_handler.formulas.keys()):
+            states[name] = self.formulas_handler.formulas[name].switch
         self.formulas_handler.switches_wanted_formulas(states)
 
     # Switches the screen and loads the data for the next screen.
