@@ -3,21 +3,21 @@ from MainWindowBody import Body
 from MainWindowHeader import Header
 from MainWindowFooter import Footer
 from FormulasHandler import FormulasHandler
-from excel.ExcelGet import ExcelGet
+from excel.ExcelInput import ExcelInput
 from excel.ExcelOutput import ExcelOutput
 
 
-# Main window of the application. This is the backbone of the application
+# Main window of the application. This is the backbone of the application.
 class MainWindow(ctk.CTk):
     def __init__(self):
         super().__init__()
         self.geometry("1000x600+300+100")
         self.title("Bakalarka")
 
-        self.excelGet = ExcelGet()
-        self.excelOutput = ExcelOutput()
-        self.formulasHandler = FormulasHandler(self.excelGet, self.excelOutput)
+        self.excel_input = ExcelInput()
+        self.excel_output = ExcelOutput()
+        self.formulas_handler = FormulasHandler(self.excel_input, self.excel_output)
 
         self.header = Header(self)
-        self.body = Body(self, self.formulasHandler, self.excelGet)
+        self.body = Body(self, self.formulas_handler, self.excel_input)
         self.footer = Footer(self)

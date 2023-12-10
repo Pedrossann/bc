@@ -1,7 +1,8 @@
 import customtkinter as ctk
 
 
-# Footer of the appli
+# Footer of the aplication with multiple screens.
+# @parent CTkFrame - parent for the frame.
 class Footer(ctk.CTkFrame):
     def __init__(self, window):
         super().__init__(window)

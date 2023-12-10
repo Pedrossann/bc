@@ -1,88 +1,102 @@
 import os
 import importlib
-import pandas as pd
 
 
-# Handles all main logic for the calculation of the Formulas.
+# Handles all main logic for the calculation and saving the Formulas.
+# @excel_input ExcelInput - handles getting data from excel files.
+# @excel_output ExcelOutput - handles saving calculated data to file.
+# TODO change formulas from [] to {}
 class FormulasHandler:
-    def __init__(self, excelGet, excelOutput):
+    def __init__(self, excel_input, excel_output):
         self.formulas = []
-        self.excelGet = excelGet
-        self.excelOutput = excelOutput
+        self.excel_input = excel_input
+        self.excel_output = excel_output
 
-    # Saves switch states of wanted formulas.
-    def saveWantedFormulas(self, switchStates):
+    # Saves to formulas which formulas we need for calculation and creates map structure in excel_output.
+    # @switch_states {"formula_name": True/False}
+    def switches_wanted_formulas(self, switch_states):
         for formula in self.formulas:
-            formula.wanted = switchStates[formula.name]
-        self.excelOutput.createSavingStructure(self.getWantedFormulas())
+            formula.wanted = switch_states[formula.name]
+        self.excel_output.create_saving_structure(self.get_wanted_formulas())
+
+    # Returns all the formulas needed for calculation.
+    # @return [Formulas] - wanted formulas.
+    def get_wanted_formulas(self):
+        wanted_formulas = []
+        for formula in self.formulas:
+            if formula.wanted:
+                wanted_formulas.append(formula)
+        return wanted_formulas
 
     # Loads all variables, that are needed for calculating all selected formulas.
-    def getAllNeededDataNames(self) -> [str]:
-        neededData = []
+    # TODO oddělat a nahradit get_wanted_formulas
+    def get_all_needed_data_names(self) -> [str]:
+        needed_data = []
         for formula in self.formulas:
             if formula.wanted == True:
                 for variable in list(formula.variables.keys()):
-                    neededData.append(variable)
+                    needed_data.append(variable)
 
-        return neededData
+        return needed_data
 
-    # Returns all variables.
-    def getAllDataNames(self) -> [str]:
-        allvariables = []
+    # @return [str] - all variable names.
+    def get_all_variable_names(self) -> [str]:
+        variables = []
         for formula in self.formulas:
             for variable in list(formula.variables.keys()):
-                allvariables.append(variable)
-        return allvariables
+                variables.append(variable)
+        return variables
 
     # Creates all formulas from folder formulas.
-    def createAllFormulas(self, window) -> [object]:
-        for scr in os.listdir("formulas"):
-            if scr.endswith(".py"):
+    # @frame CTkFrame - frame in which formula will be located.
+    # @return [Formula] - created formulas.
+    def create_formulas(self, frame) -> [object]:
+        for formula_name in os.listdir("formulas"):
+            if formula_name.endswith(".py"):
                 self.formulas.append(
                     getattr(
-                        importlib.import_module("formulas." + scr.split(".py")[0]),
-                        scr.split(".")[0],
-                    )(window)
+                        importlib.import_module(
+                            "formulas." + formula_name.split(".py")[0]
+                        ),
+                        formula_name.split(".")[0],
+                    )(frame)
                 )
         return self.formulas
 
     # Searches and returns forula based on given name.
-    def getFormulaByName(self, name):
+    # @name String - name of the formula.
+    # @return String/None - found formula.
+    def get_formula_by_name(self, name):
         for formula in self.formulas:
             if formula.name == name:
                 return formula
         return None
 
     # Gets all excel files in inport folder.
-    def getImportExcelNames(self):
-        excelNames = []
+    # @return [String] - Names of the files without ".xlsx".
+    # TODO maybe return names with ".xlsx"
+    def get_import_excel_names(self):
+        excel_names = []
         for excel in os.listdir("input"):
             if excel.endswith(".xlsx"):
-                excelNames.append(excel.rsplit(".xlsx")[0])
-        return excelNames
+                excel_names.append(excel.rsplit(".xlsx")[0])
+        return excel_names
 
-    # Runs calculation for each selected frame until there are no data for calculation.
+    # Runs calculation for each selected frame until there are no data for calculation and saves the results to ExcelOutput.
+    # TODO change "output_name" to take name from Entry
     def calculation(self):
-        calc = True
+        run = True
         row = 0
-        while calc:
-            output = self.excelGet.getData(self.getAllNeededDataNames(), row)
+        while run:
+            output = self.excel_input.get_data(self.get_all_needed_data_names(), row)
             row += 1
             if output == None:
-                calc = False
-                self.excelOutput.saveData("outputName")
+                run = False
+                self.excel_output.save_data("output_name")
             else:
-                formulaOutput = {}
-                for formula in self.getWantedFormulas():
+                formula_output = {}
+                for formula in self.get_wanted_formulas():
                     for var in list(formula.variables.keys()):
                         formula.variables[var] = output[var]
-                    formulaOutput[formula.name] = formula.calculate()
-                self.excelOutput.addSavingData(formulaOutput)
-
-    # Gets all wanted formulas.
-    def getWantedFormulas(self):
-        wantedFormulas = []
-        for formula in self.formulas:
-            if formula.wanted:
-                wantedFormulas.append(formula)
-        return wantedFormulas
+                    formula_output[formula.name] = formula.calculate()
+                self.excel_output.add_calculated_data(formula_output)

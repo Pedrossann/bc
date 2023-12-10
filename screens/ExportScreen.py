@@ -6,37 +6,39 @@ import customtkinter as ctk
 # @window - Parent of the frame.
 # @mathHandler -connection to mathematic logic of the application.
 class ExportScreen(ctk.CTkFrame):
-    def __init__(self, window, fHandler):
+    def __init__(self, window, formulas_handler):
         super().__init__(window, width=800, height=400)
 
         self.name = "export"
         self.window = window
-        self.fHandler = fHandler
+        self.formulas_handler = formulas_handler
 
-        self.buttonFrame = self.createButtonFrame()
-        self.mainFrame = ctk.CTkScrollableFrame(self, width=720, height=350)
+        self.button_frame = self.create_button_frame()
+        self.main_frame = ctk.CTkScrollableFrame(self, width=720, height=350)
 
-        self.mainFrame.pack()
-        self.buttonFrame.pack(fill="x", expand=True)
+        self.main_frame.pack()
+        self.button_frame.pack(fill="x", expand=True)
 
-    def createButtonFrame(self) -> ctk.CTkFrame:
-        buttonFrame = ctk.CTkFrame(self, width=720)
-        backButton = customButton(
-            buttonFrame,
+    # Creates Button frame for the screen.
+    def create_button_frame(self) -> ctk.CTkFrame:
+        button_frame = ctk.CTkFrame(self, width=720)
+        back_button = customButton(
+            button_frame,
             text="Zpět",
-            command=lambda: self.window.raiseScreen("import"),
+            command=lambda: self.window.raise_screen("ImportScreen"),
         )
-        doneButton = customButton(
-            buttonFrame,
+        done_button = customButton(
+            button_frame,
             text="Hotovo",
-            command=lambda: self.clickDone(),
+            command=lambda: self.click_done(),
         )
-        buttonFrame.grid_columnconfigure(0, weight=1)
-        buttonFrame.grid_columnconfigure(1, weight=1)
-        backButton.grid(row=0, column=0, sticky="w", pady=10, padx=10)
-        doneButton.grid(row=0, column=1, sticky="e", pady=10, padx=10)
+        button_frame.grid_columnconfigure(0, weight=1)
+        button_frame.grid_columnconfigure(1, weight=1)
+        back_button.grid(row=0, column=0, sticky="w", pady=10, padx=10)
+        done_button.grid(row=0, column=1, sticky="e", pady=10, padx=10)
 
-        return buttonFrame
+        return button_frame
 
-    def clickDone(self):
-        self.fHandler.calculation()
+    # Run final logic of the application.
+    def click_done(self):
+        self.formulas_handler.calculation()

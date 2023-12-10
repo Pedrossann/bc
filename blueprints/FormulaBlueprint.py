@@ -2,39 +2,41 @@ import customtkinter as ctk
 from PIL import Image
 
 
-# Formula for testing
-# Frame with all the Visual logic for TestFormula 2.
+# Holds all main values for managing Formulas.
+# @parent CTkFrame - visual data for ImportScreen.
+# @name String
+# @explanation String
 class FormulaBlueprint(ctk.CTkFrame):
     def __init__(self, parent, name, explanation):
         super().__init__(parent)
-        self.logoOn = ctk.CTkImage(
+        self.logo_on = ctk.CTkImage(
             Image.open("images/logo_button_on.png"), size=(25, 25)
         )
-        self.logoOff = ctk.CTkImage(
+        self.logo_off = ctk.CTkImage(
             Image.open("images/logo_button_off.png"), size=(25, 25)
         )
         self.wanted = False
-        self.textSwitch = False
+        self.text_switch = False
         self.switch = False
         self.name = name
-        self.excelLocation = None
+        self.excel_location = None
         self.excel = None
 
-        self.toggleButtonOff = ctk.CTkButton(
+        self.toggle_button_off = ctk.CTkButton(
             self,
-            command=lambda: self.switchState(),
+            command=lambda: self.switch_state(),
             hover_color="#aa006d",
-            image=self.logoOff,
+            image=self.logo_off,
             text="",
             fg_color="#dbdbdb",
             width=20,
         )
 
-        self.toggleButtonOn = ctk.CTkButton(
+        self.toggle_button_on = ctk.CTkButton(
             self,
-            command=lambda: self.switchState(),
+            command=lambda: self.switch_state(),
             hover_color="#aa006d",
-            image=self.logoOn,
+            image=self.logo_on,
             text="",
             fg_color="#dbdbdb",
             width=20,
@@ -49,9 +51,9 @@ class FormulaBlueprint(ctk.CTkFrame):
             text_color="black",
             anchor="w",
         )
-        self.toggleButtonOff.grid(row=0, column=0)
+        self.toggle_button_off.grid(row=0, column=0)
 
-        self.textLabel = ctk.CTkLabel(self, text=explanation)
+        self.text_label = ctk.CTkLabel(self, text=explanation)
 
         self.button.grid(row=0, column=1, sticky="nsew", padx=5)
 
@@ -60,25 +62,25 @@ class FormulaBlueprint(ctk.CTkFrame):
 
         self.pack(expand=True, fill="x", padx=5, pady=5)
 
-    # On/off switch for showing details about TestFormula2
+    # On/off switch for showing details about formula.
     def showText(self):
-        if self.textSwitch == False:
-            self.textSwitch = True
-            self.textLabel.grid(row=1, column=0, columnspan=2)
+        if self.text_switch == False:
+            self.text_switch = True
+            self.text_label.grid(row=1, column=0, columnspan=2)
             self.update()
 
         else:
-            self.textSwitch = False
-            self.textLabel.grid_remove()
+            self.text_switch = False
+            self.text_label.grid_remove()
             self.update()
 
-    # On/off switch for selecting if TestFormula2 shoud be calculated.
-    def switchState(self):
+    # On/off switch for selecting if formula shoud be calculated.
+    def switch_state(self):
         if self.switch == False:
-            self.toggleButtonOn.grid(row=0, column=0)
-            self.toggleButtonOff.grid_remove()
+            self.toggle_button_on.grid(row=0, column=0)
+            self.toggle_button_off.grid_remove()
             self.switch = True
         else:
-            self.toggleButtonOff.grid(row=0, column=0)
-            self.toggleButtonOn.grid_remove()
+            self.toggle_button_off.grid(row=0, column=0)
+            self.toggle_button_on.grid_remove()
             self.switch = False

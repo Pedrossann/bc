@@ -2,52 +2,51 @@ from widgets.customButton import customButton
 import customtkinter as ctk
 
 
-# First Frame, that lets user to choose which variables he wantsto calculate.
-# @window - Parent of the frame.
+# First Frame, that lets user to choose which variables he wants to calculate.
+# @window CTkFrame - Parent of the frame.
 # @mathHandler -connection to mathematic logic of the application.
 class ChooseScreen(ctk.CTkFrame):
-    def __init__(self, window, fHandler):
+    def __init__(self, window, formulas_handler):
         super().__init__(window, width=800, height=400)
-
         self.name = "choose"
         self.window = window
-        self.fHandler = fHandler
+        self.formulas_handler = formulas_handler
 
-        self.buttonFrame = self.createButtonFrame()
-        self.mainFrame = self.createMainFrame()
+        self.button_frame = self.create_button_frame()
+        self.main_frame = self.create_main_frame()
 
-        self.mainFrame.pack()
-        self.buttonFrame.pack(fill="x", expand=True)
+        self.main_frame.pack()
+        self.button_frame.pack(fill="x", expand=True)
 
     # Creates frame with next/back buttons.
-    def createButtonFrame(self) -> ctk.CTkFrame:
-        buttonFrame = ctk.CTkFrame(self, width=720)
-        nextButton = customButton(
-            buttonFrame,
+    def create_button_frame(self) -> ctk.CTkFrame:
+        button_frame = ctk.CTkFrame(self, width=720)
+        next_button = customButton(
+            button_frame,
             text="Další",
-            command=lambda: self.nextScreen(),
+            command=lambda: self.next_screen(),
         )
-        buttonFrame.grid_columnconfigure(1, weight=1)
-        nextButton.grid(row=0, column=1, sticky="e", pady=10, padx=10)
+        button_frame.grid_columnconfigure(1, weight=1)
+        next_button.grid(row=0, column=1, sticky="e", pady=10, padx=10)
 
-        return buttonFrame
+        return button_frame
 
     # Creates Scrollable frame with all formulas inside.
     # @return created frame with forulas.
-    def createMainFrame(self):
-        mainFrame = ctk.CTkScrollableFrame(self, width=720, height=350)
-        self.fHandler.createAllFormulas(mainFrame)
-        return mainFrame
+    def create_main_frame(self):
+        main_frame = ctk.CTkScrollableFrame(self, width=720, height=350)
+        self.formulas_handler.create_formulas(main_frame)
+        return main_frame
 
     # Gets the data(on = true/ off = false) of the switches and saves chosed formulas into the math handler.
-    def getStatesOfFormulas(self):
+    def get_states_of_formulas(self):
         states = {}
-        for formula in self.fHandler.formulas:
+        for formula in self.formulas_handler.formulas:
             states[formula.name] = formula.switch
-        self.fHandler.saveWantedFormulas(states)
+        self.formulas_handler.switches_wanted_formulas(states)
 
     # Switches the screen and loads the data for the next screen.
-    def nextScreen(self):
-        self.getStatesOfFormulas()
-        self.window.getScreenByName("import").gridNeededVariables()
-        self.window.raiseScreen("import")
+    def next_screen(self):
+        self.get_states_of_formulas()
+        self.window.get_screen_by_name("ImportScreen").grid_needed_variables()
+        self.window.raise_screen("ImportScreen")
