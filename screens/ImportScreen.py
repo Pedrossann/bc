@@ -37,7 +37,7 @@ class ImportScreen(ctk.CTkFrame):
         back_button = customButton(
             button_frame,
             text="Zpět",
-            command=lambda: self.window.raise_screen("ChooseScreen"),
+            command=lambda: self.window.screens["ChooseScreen"].tkraise(),
         )
         button_frame.grid_columnconfigure(0, weight=1)
         button_frame.grid_columnconfigure(1, weight=1)
@@ -97,4 +97,4 @@ class ImportScreen(ctk.CTkFrame):
             }
         self.excel_input.variables = self.variable_info
         self.excel_input.open_excels()
-        self.window.raise_screen("ExportScreen")
+        self.window.screens["ExportScreen"].tkraise()

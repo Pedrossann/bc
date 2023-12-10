@@ -47,5 +47,5 @@ class ChooseScreen(ctk.CTkFrame):
     # Switches the screen and loads the data for the next screen.
     def next_screen(self):
         self.get_states_of_formulas()
-        self.window.get_screen_by_name("ImportScreen").grid_needed_variables()
-        self.window.raise_screen("ImportScreen")
+        self.window.screens["ImportScreen"].grid_needed_variables()
+        self.window.screens["ImportScreen"].tkraise()

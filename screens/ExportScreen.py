@@ -24,7 +24,7 @@ class ExportScreen(ctk.CTkFrame):
         back_button = customButton(
             button_frame,
             text="Zpět",
-            command=lambda: self.window.raise_screen("ImportScreen"),
+            command=lambda: self.window.screens["ImportScreen"].tkraise(),
         )
         done_button = customButton(
             button_frame,
