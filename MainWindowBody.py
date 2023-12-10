@@ -30,8 +30,6 @@ class Body(ctk.CTkFrame):
                     importlib.import_module("screens." + scr.split(".py")[0]),
                     scr.split(".")[0],
                 )(self, self.formulas_handler)
-        print(all_screens)
-
         return all_screens
 
     # Grids all screen classes.
