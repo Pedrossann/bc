@@ -28,7 +28,7 @@ class FormulasHandler:
         return wanted_formulas
 
     # Loads all variables, that are needed for calculating all selected formulas.
-    # TODO oddělat a nahradit get_wanted_formulas
+    # @return [String] - list of needed variable names.
     def get_all_needed_data_names(self) -> [str]:
         needed_data = []
         for name in list(self.formulas.keys()):

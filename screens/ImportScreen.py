@@ -5,25 +5,25 @@ import customtkinter as ctk
 # This Frame lets user to specify, where program should take data.
 # @window CTkFrame- Parent of the frame.
 # @formulas_handler FormulasHandler - connection formulas logic of the application.
-# TODO remove self.name, self.variable_info?, self.variables_frame,self.button_frame
 class ImportScreen(ctk.CTkFrame):
     def __init__(self, window, formulas_handler):
         super().__init__(window, width=800, height=400)
         self.window = window
         self.formulas_handler = formulas_handler
+        self.specific_variable_frame = {}
 
         self.excel_input = window.excel_input
 
-        self.variable_info = {}
+        self.create_basic_screen_layout()
 
-        self.specific_variable_frame = {}
+    # Initializes main visual aspects of the screen.
+    def create_basic_screen_layout(self):
+        button_frame = self.create_button_frame()
+        main_variables_frame = ctk.CTkScrollableFrame(self, width=720, height=350)
 
-        self.button_frame = self.create_button_frame()
-        self.variables_frame = ctk.CTkScrollableFrame(self, width=720, height=350)
-
-        self.variables_frame.pack()
-        self.button_frame.pack(fill="x", expand=True)
-        self.create_variable_frame()
+        main_variables_frame.pack()
+        button_frame.pack(fill="x", expand=True)
+        self.create_variable_frame(main_variables_frame)
 
     # Creates frame for next/back buttons
     # @return Frame
@@ -48,12 +48,12 @@ class ImportScreen(ctk.CTkFrame):
 
     # Creates frames for all variables.
     # @return {CTkFrames} - Map of specific variable frames.
-    def create_variable_frame(self) -> ctk.CTkFrame:
+    def create_variable_frame(self, main_variables_frame) -> ctk.CTkFrame:
         excel_names = ["-"]
         for excel_name in self.formulas_handler.get_import_excel_names():
             excel_names.append(excel_name)
         for variable_name in self.formulas_handler.get_all_variable_names():
-            variable_frame = ctk.CTkFrame(self.variables_frame)
+            variable_frame = ctk.CTkFrame(main_variables_frame)
             self.specific_variable_frame[variable_name] = {
                 "frame": variable_frame,
                 "coordinates": ctk.CTkEntry(
@@ -88,13 +88,14 @@ class ImportScreen(ctk.CTkFrame):
 
     # Goes to next screen and runs necessary logic for it.
     def next_screen(self):
+        variable_info = {}
         for variable_name in self.formulas_handler.get_all_needed_data_names():
-            self.variable_info[variable_name] = {
+            variable_info[variable_name] = {
                 "excel": self.specific_variable_frame[variable_name]["excel"].get(),
                 "coordinates": self.specific_variable_frame[variable_name][
                     "coordinates"
                 ].get(),
             }
-        self.excel_input.variables = self.variable_info
+        self.excel_input.variables = variable_info
         self.excel_input.open_excels()
         self.window.screens["ExportScreen"].tkraise()
