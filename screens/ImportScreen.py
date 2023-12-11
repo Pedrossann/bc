@@ -1,50 +1,24 @@
-from widgets.customButton import customButton
+from blueprints.ScreenBllueprint import ScreenBllueprint
 import customtkinter as ctk
 
 
 # This Frame lets user to specify, where program should take data.
 # @window CTkFrame- Parent of the frame.
 # @formulas_handler FormulasHandler - connection formulas logic of the application.
-class ImportScreen(ctk.CTkFrame):
+# TODO get rid of self.excel_input
+class ImportScreen(ScreenBllueprint):
     def __init__(self, window, formulas_handler):
-        super().__init__(window, width=800, height=400)
-        self.window = window
-        self.formulas_handler = formulas_handler
-        self.specific_variable_frame = {}
+        super().__init__(window, formulas_handler)
 
+        self.specific_variable_frame = {}
         self.excel_input = window.excel_input
 
-        self.create_basic_screen_layout()
+        button_frame = self.create_button_frame(True, True)
+        main_frame = self.create_main_frame()
 
-    # Initializes main visual aspects of the screen.
-    def create_basic_screen_layout(self):
-        button_frame = self.create_button_frame()
-        main_variables_frame = ctk.CTkScrollableFrame(self, width=720, height=350)
-
-        main_variables_frame.pack()
+        main_frame.pack()
         button_frame.pack(fill="x", expand=True)
-        self.create_variable_frame(main_variables_frame)
-
-    # Creates frame for next/back buttons
-    # @return Frame
-    def create_button_frame(self) -> ctk.CTkFrame:
-        button_frame = ctk.CTkFrame(self, width=720)
-        next_button = customButton(
-            button_frame,
-            text="Další",
-            command=lambda: self.next_screen(),
-        )
-        back_button = customButton(
-            button_frame,
-            text="Zpět",
-            command=lambda: self.window.screens["ChooseScreen"].tkraise(),
-        )
-        button_frame.grid_columnconfigure(0, weight=1)
-        button_frame.grid_columnconfigure(1, weight=1)
-        next_button.grid(row=0, column=1, sticky="e", pady=10, padx=10)
-        back_button.grid(row=0, column=0, sticky="w", pady=10, padx=10)
-
-        return button_frame
+        self.create_variable_frame(main_frame)
 
     # Creates frames for all variables.
     # @return {CTkFrames} - Map of specific variable frames.
@@ -87,6 +61,7 @@ class ImportScreen(ctk.CTkFrame):
             self.specific_variable_frame[variable]["frame"].pack(pady=5)
 
     # Goes to next screen and runs necessary logic for it.
+    # TODO change variable_info to variables_info
     def next_screen(self):
         variable_info = {}
         for variable_name in self.formulas_handler.get_all_needed_data_names():
@@ -99,3 +74,7 @@ class ImportScreen(ctk.CTkFrame):
         self.excel_input.variables = variable_info
         self.excel_input.open_excels()
         self.window.screens["ExportScreen"].tkraise()
+
+    # Goes to previous Screen
+    def back_screen(self):
+        self.window.screens["ChooseScreen"].tkraise()

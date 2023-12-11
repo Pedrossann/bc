@@ -5,7 +5,7 @@ from blueprints.FormulaBlueprint import FormulaBlueprint
 class TestFormula(FormulaBlueprint):
     def __init__(self, parent):
         self.name = "Formula1"
-        self.explanation = "Vysvetleni promenne"
+        self.explanation = "hodnota1 + hodnota2"
         super().__init__(parent, self.name, self.explanation)
 
         self.variables = {"hodnota1": None, "hodnota2": None}

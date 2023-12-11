@@ -69,7 +69,7 @@ class FormulasHandler:
 
     # Gets all excel files in inport folder.
     # @return [String] - Names of the files without ".xlsx".
-    def get_import_excel_names(self):
+    def get_import_excel_names(self) -> [str]:
         excel_names = []
         for excel in os.listdir("input"):
             if excel.endswith(".xlsx"):
@@ -91,5 +91,5 @@ class FormulasHandler:
                 for formula in self.get_wanted_formulas():
                     for var in list(formula.variables.keys()):
                         formula.variables[var] = output[var]
-                    formula_output[formula.name] = formula.calculate()
+                    formula_output[formula.name] = formula.try_calculate()
                 self.excel_output.add_calculated_data(formula_output)

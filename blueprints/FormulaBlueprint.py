@@ -84,3 +84,11 @@ class FormulaBlueprint(ctk.CTkFrame):
             self.toggle_button_off.grid(row=0, column=0)
             self.toggle_button_on.grid_remove()
             self.switch = False
+
+    # Try calculation. Gives "-" if calculation cant be done.
+    # @return result/"-"
+    def try_calculate(self):
+        try:
+            return self.calculate()
+        except TypeError:
+            return "-"
