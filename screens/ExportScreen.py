@@ -13,9 +13,11 @@ class ExportScreen(ctk.CTkFrame):
         self.formulas_handler = formulas_handler
 
         self.button_frame = self.create_button_frame()
-        self.main_frame = ctk.CTkScrollableFrame(self, width=720, height=350)
+        main_frame = ctk.CTkScrollableFrame(self, width=720, height=350)
 
-        self.main_frame.pack()
+        self.name_entry = self.create_entry_frame(main_frame)
+
+        main_frame.pack()
         self.button_frame.pack(fill="x", expand=True)
 
     # Creates Button frame for the screen.
@@ -40,4 +42,15 @@ class ExportScreen(ctk.CTkFrame):
 
     # Run final logic of the application.
     def click_done(self):
-        self.formulas_handler.calculation()
+        self.formulas_handler.calculation(self.name_entry.get())
+
+    def create_entry_frame(self, parent):
+        entry_frame = ctk.CTkFrame(parent)
+        text = ctk.CTkLabel(entry_frame, text="Output file name")
+        entry = ctk.CTkEntry(entry_frame, placeholder_text="name")
+
+        text.grid(row=0, column=0, padx=10)
+        entry.grid(row=0, column=1, padx=10)
+        entry_frame.pack()
+
+        return entry

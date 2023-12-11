@@ -77,8 +77,7 @@ class FormulasHandler:
         return excel_names
 
     # Runs calculation for each selected frame until there are no data for calculation and saves the results to ExcelOutput.
-    # TODO change "output_name" to take name from Entry
-    def calculation(self):
+    def calculation(self, output_file_name):
         run = True
         row = 0
         while run:
@@ -86,7 +85,7 @@ class FormulasHandler:
             row += 1
             if output == None:
                 run = False
-                self.excel_output.save_data("output_name")
+                self.excel_output.save_data(output_file_name)
             else:
                 formula_output = {}
                 for formula in self.get_wanted_formulas():
