@@ -22,10 +22,10 @@ class TestMainWindow(unittest.TestCase):
 
             self.app = MainWindow()
 
-    def testInit(self):
+    def test_init(self):
         self.assertIsNotNone(self.app)
 
-    def testInitializingObjects(self):
+    def test_initializing_objects(self):
         self.mock_footer.assert_called_once()
         self.mock_header.assert_called_once()
         self.mock_body.assert_called_once()
