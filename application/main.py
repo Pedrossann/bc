@@ -1,4 +1,4 @@
-import src.MainWindow as Window
+import src.main_window as Window
 
 
 # Application that calculates basic scripts in regional development

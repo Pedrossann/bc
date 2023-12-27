@@ -1,17 +1,17 @@
 import unittest
 from unittest.mock import patch
 
-from application.src.MainWindow import MainWindow
+from application.src import MainWindow
 
 
 class TestMainWindow(unittest.TestCase):
     def setUp(self):
-        with patch('application.src.MainWindow.Footer') as MockFooter, \
-             patch('application.src.MainWindow.Header') as MockHeader, \
-             patch('application.src.MainWindow.Body') as MockBody, \
-             patch('application.src.MainWindow.ExcelInput') as MockExcelInput, \
-             patch('application.src.MainWindow.ExcelOutput') as MockExcelOutput, \
-             patch('application.src.MainWindow.FormulasHandler') as MockFormulasHandler:
+        with patch('application.src.main_window.Footer') as MockFooter, \
+             patch('application.src.main_window.Header') as MockHeader, \
+             patch('application.src.main_window.Body') as MockBody, \
+             patch('application.src.main_window.ExcelInput') as MockExcelInput, \
+             patch('application.src.main_window.ExcelOutput') as MockExcelOutput, \
+             patch('application.src.main_window.FormulasHandler') as MockFormulasHandler:
 
             self.mock_footer = MockFooter
             self.mock_header = MockHeader
