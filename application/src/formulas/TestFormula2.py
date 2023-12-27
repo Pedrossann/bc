@@ -1,8 +1,9 @@
 from application.src.blueprints.FormulaBlueprint import FormulaBlueprint
 import customtkinter as ctk
 
-
-# TODO bug with -
+"""
+TODO bug with -
+"""
 class TestFormula2(FormulaBlueprint):
     def __init__(self, parent: ctk.CTkScrollableFrame) -> None:
         self.name = "Formula -"

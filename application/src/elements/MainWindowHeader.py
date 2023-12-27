@@ -2,9 +2,10 @@ import customtkinter as ctk
 from PIL import Image
 import os
 
-
-# Header of the aplication with multiple screens.
-# @parent CTkFrame - parent for the frame
+"""
+Header of the aplication with multiple screens.
+@parent CTkFrame - parent for the frame
+"""
 class Header(ctk.CTkFrame):
     def __init__(self, window) -> None:
         super().__init__(window, height=100)

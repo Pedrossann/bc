@@ -1,8 +1,9 @@
 from application.src.blueprints.FormulaBlueprint import FormulaBlueprint
 import customtkinter as ctk
 
-
-# Formula for testing
+"""
+Formula for testing
+"""
 class TestFormula(FormulaBlueprint):
     def __init__(self, parent: ctk.CTkScrollableFrame) -> None:
         self.name = "Formula +"

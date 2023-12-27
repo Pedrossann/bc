@@ -2,10 +2,12 @@ import customtkinter as ctk
 from PIL import Image
 
 
-# Holds all main values for managing Formulas.
-# @parent CTkFrame - visual data for ImportScreen.
-# @name String
-# @explanation String
+"""
+Holds all main values for managing Formulas.
+@parent CTkFrame - visual data for ImportScreen.
+@name String
+@explanation String
+"""
 class FormulaBlueprint(ctk.CTkFrame):
     def __init__(self, parent, name, explanation):
         super().__init__(parent)
@@ -62,7 +64,9 @@ class FormulaBlueprint(ctk.CTkFrame):
 
         self.pack(expand=True, fill="x", padx=5, pady=5)
 
-    # On/off switch for showing details about formula.
+    """
+    On/off switch for showing details about formula.
+    """
     def showText(self):
         if self.text_switch == False:
             self.text_switch = True
@@ -74,7 +78,9 @@ class FormulaBlueprint(ctk.CTkFrame):
             self.text_label.grid_remove()
             self.update()
 
-    # On/off switch for selecting if formula shoud be calculated.
+    """
+    On/off switch for selecting if formula shoud be calculated.
+    """
     def switch_state(self):
         if self.switch == False:
             self.toggle_button_on.grid(row=0, column=0)
@@ -85,8 +91,10 @@ class FormulaBlueprint(ctk.CTkFrame):
             self.toggle_button_on.grid_remove()
             self.switch = False
 
-    # Try calculation. Gives "-" if calculation cant be done.
-    # @return result/"-"
+    """
+    Try calculation. Gives "-" if calculation cant be done.
+    @return result/"-"
+    """
     def try_calculate(self):
         try:
             return self.calculate()

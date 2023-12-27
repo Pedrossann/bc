@@ -7,7 +7,9 @@ from .excel.ExcelInput import ExcelInput
 from .excel.ExcelOutput import ExcelOutput
 
 
-# Main window of the application. This is the backbone of the application.
+"""
+Main window of the application. This is the backbone of the application.
+"""
 class MainWindow(ctk.CTk):
     def __init__(self):
         super().__init__()

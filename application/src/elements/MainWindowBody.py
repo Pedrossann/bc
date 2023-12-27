@@ -4,11 +4,12 @@ import importlib
 
 from application.src.blueprints.ScreenBlueprint import ScreenBlueprint
 
-
-# Body of the aplication with multiple screens.
-# @param CTkFrame parent - parent for the frame
-# @formulas_handler FormulasHandler
-# @excel_input ExcelInput - gets data from excel files.
+"""
+Body of the aplication with multiple screens.
+@param CTkFrame parent - parent for the frame
+@formulas_handler FormulasHandler
+@excel_input ExcelInput - gets data from excel files.
+"""
 class Body(ctk.CTkFrame):
     def __init__(
         self,
@@ -26,8 +27,10 @@ class Body(ctk.CTkFrame):
         self.pack(anchor="n", expand=True)
         self.screens["ChooseScreen"].tkraise()
 
-    # Creates and returns all screen classes from screens folder.
-    # @return {"screen_name": Screen} - Map of created screen classes.
+    """
+    Creates and returns all screen classes from screens folder.
+    @return {"screen_name": Screen} - Map of created screen classes.
+    """
     def create_screens(self) -> {str: ScreenBlueprint}:
         all_screens = {}
         for scr in os.listdir("application\\src\\screens"):
@@ -44,8 +47,10 @@ class Body(ctk.CTkFrame):
                     print(f"An error occurred while importing {module_name}: {e}")
         return all_screens
 
-    # Grids all screen classes.
-    # @screens {"screen_name": Screen}
+    """
+    Grids all screen classes.
+    @screens {"screen_name": Screen}
+    """
     def grid_screens(self, screens: {str: ScreenBlueprint}) -> None:
         for screen in list(screens.keys()):
             screens[screen].grid(row=0, column=0)

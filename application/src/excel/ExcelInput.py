@@ -2,14 +2,17 @@ import pandas as pd
 import os
 import re
 
-
-# Handles getting data from excel files and process them.
+"""
+Handles getting data from excel files and process them.
+"""
 class ExcelInput:
     def __init__(self) -> None:
         self.variables = None
         self.excels = {}
 
-    # Loads and saves all excel files from input folder.
+    """
+    Loads and saves all excel files from input folder.
+    """
     def open_excels(self) -> None:
         for variable_name in list(self.variables.keys()):
             self.excels[variable_name] = pd.read_excel(
@@ -19,7 +22,9 @@ class ExcelInput:
                 + ".xlsx"
             )
 
-    # Gets data from specific excel column based on name and row.
+    """
+    Gets data from specific excel column based on name and row.
+    """
     def get_data(self, formula_variable_names: str, row: int) -> str:
         output = {}
         for variable in formula_variable_names:
@@ -40,10 +45,12 @@ class ExcelInput:
             output = None
         return output
 
-    # Converts column to integer.
-    # @column String ("B2", "C3", ...)
-    # @return Integer column integer
-    # TODO asi nefunguje spravne
+    """
+    Converts column to integer.
+    @column String ("B2", "C3", ...)
+    @return Integer column integer
+    TODO asi nefunguje spravne
+    """
     def excel_column_number(self, column: str) -> int:
         strings = re.sub(r"[^A-Za-z]", "", column)
         result = 0
@@ -51,17 +58,21 @@ class ExcelInput:
             result = result * 26 + (ord(char) - ord("A") + 1)
         return result
 
-    # Gets all numbers from the string.
-    # string ("A1", "B2", ...)
-    # @return Integer
+    """
+    Gets all numbers from the string.
+    @string ("A1", "B2", ...)
+    @return Integer
+    """
     def extract_numbers_from_string(self, string: str) -> int:
         numbers = re.findall(r"\d+", string)
         numbers_list = [int(number) for number in numbers]
         return int("".join(map(str, numbers_list)))
 
-    # Check if all data in this map are null.
-    # @varList {"name": value}
-    # @return True = empty/False
+    """
+    Check if all data in this map are null.
+    @varList {"name": value}
+    @return True = empty/False
+    """
     def check_if_var_is_null(self, var_map: {str: str}) -> bool:
         empty = True
         for var in list(var_map.keys()):
