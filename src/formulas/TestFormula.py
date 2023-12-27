@@ -5,7 +5,7 @@ import customtkinter as ctk
 # Formula for testing
 class TestFormula(FormulaBlueprint):
     def __init__(self, parent: ctk.CTkFrame) -> None:
-        self.name = "Formula1"
+        self.name = "Formula +"
         self.explanation = "hodnota1 + hodnota2"
         super().__init__(parent, self.name, self.explanation)
 
