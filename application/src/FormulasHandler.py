@@ -55,7 +55,7 @@ class FormulasHandler:
             if formula_name.endswith(".py"):
                 self.formulas[formula_name] = getattr(
                     importlib.import_module("formulas." + formula_name.split(".py")[0]),
-                    formula_name.split(".")[0],
+                    formula_name.split(".")[0]
                 )(frame)
         return self.formulas
 
