@@ -1,6 +1,6 @@
 import os
 import importlib
-from blueprints.FormulaBlueprint import FormulaBlueprint
+from .blueprints.FormulaBlueprint import FormulaBlueprint
 
 
 # Handles all main logic for the calculation and saving the Formulas.
@@ -51,12 +51,19 @@ class FormulasHandler:
     # @frame CTkFrame - frame in which formula will be located.
     # @return [Formula] - created formulas.
     def create_formulas(self, frame) -> [FormulaBlueprint]:
-        for formula_name in os.listdir("src/formulas"):
-            if formula_name.endswith(".py"):
-                self.formulas[formula_name] = getattr(
-                    importlib.import_module("formulas." + formula_name.split(".py")[0]),
-                    formula_name.split(".")[0]
-                )(frame)
+        for formula_name in os.listdir("application\\src\\formulas"):
+            if formula_name.endswith(".py") and not formula_name.startswith("__"):
+                module_name = "src.formulas." + formula_name[:-3]
+                class_name = formula_name[:-3]
+
+                try:
+                    module = importlib.import_module(module_name)
+                    self.formulas[class_name] = getattr(module, class_name)(frame)
+
+                except AttributeError:
+                    print(f"The module {module_name} does not have a class {class_name}")
+                except Exception as e:
+                    print(f"An error occurred while importing {module_name}: {e}")
         return self.formulas
 
     # Searches and returns forula based on given name.
@@ -72,7 +79,7 @@ class FormulasHandler:
     # @return [String] - Names of the files without ".xlsx".
     def get_import_excel_names(self) -> [str]:
         excel_names = []
-        for excel in os.listdir("src/input"):
+        for excel in os.listdir("application\\src\\input"):
             if excel.endswith(".xlsx"):
                 excel_names.append(excel.rsplit(".xlsx")[0])
         return excel_names
