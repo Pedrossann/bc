@@ -10,10 +10,10 @@ class FormulaBlueprint(ctk.CTkFrame):
     def __init__(self, parent, name, explanation):
         super().__init__(parent)
         self.logo_on = ctk.CTkImage(
-            Image.open("src/images/logo_button_on.png"), size=(25, 25)
+            Image.open("application\\src\\images\\logo_button_on.png"), size=(25, 25)
         )
         self.logo_off = ctk.CTkImage(
-            Image.open("src/images/logo_button_off.png"), size=(25, 25)
+            Image.open("application\\src\\images\\logo_button_off.png"), size=(25, 25)
         )
         self.wanted = False
         self.text_switch = False

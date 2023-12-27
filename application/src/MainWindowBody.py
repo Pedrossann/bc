@@ -2,7 +2,7 @@ import customtkinter as ctk
 import os
 import importlib
 
-from blueprints.ScreenBlueprint import ScreenBlueprint
+from .blueprints.ScreenBlueprint import ScreenBlueprint
 
 
 # Body of the aplication with multiple screens.
@@ -30,10 +30,10 @@ class Body(ctk.CTkFrame):
     # @return {"screen_name": Screen} - Map of created screen classes.
     def create_screens(self) -> {str: ScreenBlueprint}:
         all_screens = {}
-        for scr in os.listdir("src/screens"):
+        for scr in os.listdir("application\\src\\screens"):
             if scr.endswith(".py"):
                 all_screens[scr.split(".py")[0]] = getattr(
-                    importlib.import_module("screens." + scr.split(".py")[0]),
+                    importlib.import_module("src.screens." + scr.split(".py")[0]),
                     scr.split(".")[0],
                 )(self, self.formulas_handler)
         return all_screens

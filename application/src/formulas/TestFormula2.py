@@ -1,10 +1,10 @@
-from blueprints.FormulaBlueprint import FormulaBlueprint
+from application.src.blueprints.FormulaBlueprint import FormulaBlueprint
 import customtkinter as ctk
 
 
 # TODO bug with -
 class TestFormula2(FormulaBlueprint):
-    def __init__(self, parent: ctk.CTkFrame) -> None:
+    def __init__(self, parent: ctk.CTkScrollableFrame) -> None:
         self.name = "Formula -"
         self.explanation = "hodnota2 - hodnota3"
         super().__init__(parent, self.name, self.explanation)

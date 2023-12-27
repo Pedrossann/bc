@@ -1,5 +1,5 @@
-from blueprints.ScreenBlueprint import ScreenBlueprint
-from FormulasHandler import FormulasHandler
+from application.src.blueprints.ScreenBlueprint import ScreenBlueprint
+from application.src.FormulasHandler import FormulasHandler
 import customtkinter as ctk
 
 

@@ -1,10 +1,10 @@
 import customtkinter as ctk
-from MainWindowBody import Body
-from MainWindowHeader import Header
-from MainWindowFooter import Footer
-from FormulasHandler import FormulasHandler
-from excel.ExcelInput import ExcelInput
-from excel.ExcelOutput import ExcelOutput
+from .MainWindowBody import Body
+from .MainWindowHeader import Header
+from .MainWindowFooter import Footer
+from .FormulasHandler import FormulasHandler
+from .excel.ExcelInput import ExcelInput
+from .excel.ExcelOutput import ExcelOutput
 
 
 # Main window of the application. This is the backbone of the application.

@@ -1,6 +1,6 @@
-from widgets.customButton import customButton
+from application.src.widgets import customButton
 import customtkinter as ctk
-from FormulasHandler import FormulasHandler
+from application.src.FormulasHandler import FormulasHandler
 
 
 # Blueprint for common parts for all Screens.
@@ -23,7 +23,7 @@ class ScreenBlueprint(ctk.CTkFrame):
         button_frame.grid_columnconfigure(1, weight=1)
 
         if next_screen:
-            next_button = customButton(
+            next_button = ctk.CTkButton(
                 button_frame,
                 text="Další",
                 command=lambda: self.next_screen(),
@@ -31,7 +31,7 @@ class ScreenBlueprint(ctk.CTkFrame):
             next_button.grid(row=0, column=1, sticky="e", pady=10, padx=10)
 
         if back_screen:
-            back_button = customButton(
+            back_button = ctk.CTkButton(
                 button_frame,
                 text="Zpět",
                 command=lambda: self.back_screen(),
@@ -41,5 +41,11 @@ class ScreenBlueprint(ctk.CTkFrame):
         return button_frame
 
     # Creates main scrollable frame for screen.
-    def create_main_frame(self) -> None:
+    def create_main_frame(self) -> ctk.CTkScrollableFrame:
         return ctk.CTkScrollableFrame(self, width=720, height=350)
+
+    def next_screen(self):
+        pass
+
+    def back_screen(self):
+        pass
