@@ -1,4 +1,3 @@
-from application.src.widgets import CustomButton
 import customtkinter as ctk
 
 

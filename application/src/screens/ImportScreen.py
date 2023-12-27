@@ -1,6 +1,5 @@
 from application.src.blueprints.ScreenBlueprint import ScreenBlueprint
 import customtkinter as ctk
-from application.src.FormulasHandler import FormulasHandler
 
 
 # This Frame lets user to specify, where program should take data.
@@ -8,7 +7,7 @@ from application.src.FormulasHandler import FormulasHandler
 # @formulas_handler FormulasHandler - connection formulas logic of the application.
 # TODO get rid of self.excel_input
 class ImportScreen(ScreenBlueprint):
-    def __init__(self, window: ctk.CTkFrame, formulas_handler: FormulasHandler) -> None:
+    def __init__(self, window: ctk.CTkFrame, formulas_handler: 'FormulasHandler') -> None:
         super().__init__(window, formulas_handler)
 
         self.specific_variable_frame = {}

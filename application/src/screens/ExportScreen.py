@@ -1,13 +1,12 @@
 from application.src.blueprints.ScreenBlueprint import ScreenBlueprint
 import customtkinter as ctk
-from application.src.FormulasHandler import FormulasHandler
 
 
 # Frame that let user choose criteria about saving the output
 # @window - Parent of the frame.
 # @mathHandler -connection to mathematic logic of the application.
 class ExportScreen(ScreenBlueprint):
-    def __init__(self, window: ctk.CTkFrame, formulas_handler: FormulasHandler) -> None:
+    def __init__(self, window: ctk.CTkFrame, formulas_handler: 'FormulasHandler') -> None:
         super().__init__(window, formulas_handler)
 
         button_frame = self.create_button_frame(True, True)
