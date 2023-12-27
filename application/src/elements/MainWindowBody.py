@@ -2,7 +2,7 @@ import customtkinter as ctk
 import os
 import importlib
 
-from .blueprints.ScreenBlueprint import ScreenBlueprint
+from application.src.blueprints.ScreenBlueprint import ScreenBlueprint
 
 
 # Body of the aplication with multiple screens.

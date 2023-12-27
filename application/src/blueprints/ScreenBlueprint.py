@@ -1,13 +1,12 @@
-from application.src.widgets import customButton
+from application.src.widgets import CustomButton
 import customtkinter as ctk
-from application.src.FormulasHandler import FormulasHandler
 
 
 # Blueprint for common parts for all Screens.
 # @window CTkFrame- Parent of the frame.
 # @formulas_handler FormulasHandler - connection formulas logic of the application.
 class ScreenBlueprint(ctk.CTkFrame):
-    def __init__(self, window: ctk.CTkFrame, formulas_handler: FormulasHandler) -> None:
+    def __init__(self, window: ctk.CTkFrame, formulas_handler: 'FormulasHandler') -> None:
         super().__init__(window, width=800, height=400)
         self.window = window
         self.formulas_handler = formulas_handler
