@@ -32,10 +32,16 @@ class Body(ctk.CTkFrame):
         all_screens = {}
         for scr in os.listdir("application\\src\\screens"):
             if scr.endswith(".py"):
-                all_screens[scr.split(".py")[0]] = getattr(
-                    importlib.import_module("src.screens." + scr.split(".py")[0]),
-                    scr.split(".")[0],
-                )(self, self.formulas_handler)
+                module_name = "application.src.screens." + scr[:-3]
+
+                try:
+                    module = importlib.import_module(module_name)
+
+                    all_screens[scr[:-3]] = getattr(module,scr[-3])(self, self.formulas_handler)
+                except AttributeError:
+                    print(f"The module {module_name} does not have a class {scr[-3]}")
+                except Exception as e:
+                    print(f"An error occurred while importing {module_name}: {e}")
         return all_screens
 
     # Grids all screen classes.
