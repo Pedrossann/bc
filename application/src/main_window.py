@@ -2,7 +2,7 @@ import customtkinter as ctk
 from .elements.MainWindowBody import Body
 from .elements.MainWindowHeader import Header
 from .elements.MainWindowFooter import Footer
-from .FormulasHandler import FormulasHandler
+from .formulas_handler import FormulasHandler
 from .excel.ExcelInput import ExcelInput
 from .excel.ExcelOutput import ExcelOutput
 
