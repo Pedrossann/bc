@@ -1,6 +1,6 @@
-from blueprints.ScreenBlueprint import ScreenBlueprint
+from application.src.blueprints.ScreenBlueprint import ScreenBlueprint
 import customtkinter as ctk
-from FormulasHandler import FormulasHandler
+from application.src.FormulasHandler import FormulasHandler
 
 
 # This Frame lets user to specify, where program should take data.

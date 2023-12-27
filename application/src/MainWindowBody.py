@@ -37,7 +37,7 @@ class Body(ctk.CTkFrame):
                 try:
                     module = importlib.import_module(module_name)
 
-                    all_screens[scr[:-3]] = getattr(module,scr[-3])(self, self.formulas_handler)
+                    all_screens[scr[:-3]] = getattr(module, scr[:-3])(self, self.formulas_handler)
                 except AttributeError:
                     print(f"The module {module_name} does not have a class {scr[-3]}")
                 except Exception as e:
