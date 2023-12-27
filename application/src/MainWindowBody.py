@@ -31,7 +31,7 @@ class Body(ctk.CTkFrame):
     def create_screens(self) -> {str: ScreenBlueprint}:
         all_screens = {}
         for scr in os.listdir("application\\src\\screens"):
-            if scr.endswith(".py"):
+            if scr.endswith(".py") and not scr.startswith("__"):
                 module_name = "application.src.screens." + scr[:-3]
 
                 try:
