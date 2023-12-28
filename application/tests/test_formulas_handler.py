@@ -7,13 +7,31 @@ from application.src.blueprints import FormulaBlueprint
 from application.src.excel import ExcelInput, ExcelOutput
 
 
-def getMockSwitchStates() -> {str: bool}:
+def get_mock_switch_states() -> {str: bool}:
     mock_formulas = {
-        'formula1': False,
-        'formula2': False,
-        'formula3': True
+        'wantedFormula1': False,
+        'notWantedFormula': False,
+        'wantedFormula2': True
     }
     return mock_formulas
+
+
+def get_mock_formulas():
+    mock_formula1 = Mock(spec=FormulaBlueprint)
+    mock_formula2 = Mock(spec=FormulaBlueprint)
+    mock_formula3 = Mock(spec=FormulaBlueprint)
+
+    mock_formula1.wanted = True
+    mock_formula2.wanted = False
+    mock_formula3.wanted = True
+
+    mock_formula1.variables = {"variable1": Mock(), "variable2": Mock()}
+    mock_formula2.variables = {"variable2": Mock(), "variable3": Mock()}
+    mock_formula3.variables = {"variable2": Mock(), "variable4": Mock()}
+
+    return {"wantedFormula1": mock_formula1,
+            "notWantedFormula": mock_formula2,
+            "wantedFormula2": mock_formula3}
 
 
 class TestFormulasHandler(unittest.TestCase):
@@ -31,75 +49,41 @@ class TestFormulasHandler(unittest.TestCase):
         self.assertEquals(self.formulas_handler.excel_input, self.mock_excel_input)
 
     def test_switches_wanted_formulas_with_valid_formulas(self):
-        valid_formulas = getMockSwitchStates()
-        self.formulas_handler.formulas = {"formula1": Mock(),
-                                          "formula2": Mock(),
-                                          "formula3": Mock()}
+        valid_formulas = get_mock_switch_states()
+        self.formulas_handler.formulas = get_mock_formulas()
 
         self.formulas_handler.switches_wanted_formulas(valid_formulas)
 
-        self.assertEquals(self.formulas_handler.formulas["formula1"].wanted, False)
-        self.assertEquals(self.formulas_handler.formulas["formula2"].wanted, False)
-        self.assertEquals(self.formulas_handler.formulas["formula3"].wanted, True)
+        self.assertEquals(self.formulas_handler.formulas["wantedFormula1"].wanted, False)
+        self.assertEquals(self.formulas_handler.formulas["notWantedFormula"].wanted, False)
+        self.assertEquals(self.formulas_handler.formulas["wantedFormula2"].wanted, True)
+
+        self.formulas_handler.excel_output.create_saving_structure.assert_called_once()
 
     def test_switches_wanted_formulas_with_invalid_formulas(self):
         invalid_formulas = {}
-        self.formulas_handler.formulas = {"formula1": Mock(),
-                                          "formula2": Mock(),
-                                          "formula3": Mock()}
+        self.formulas_handler.formulas = get_mock_formulas()
 
         with self.assertRaises(ValueError):
             self.formulas_handler.switches_wanted_formulas(invalid_formulas)
 
     def test_get_wanted_formulas(self):
-        mock_formula1 = Mock(spec=FormulaBlueprint)
-        mock_formula2 = Mock(spec=FormulaBlueprint)
-        mock_formula3 = Mock(spec=FormulaBlueprint)
-
-        self.formulas_handler.formulas = {"wantedFormula1": mock_formula1,
-                                          "notWantedFormula": mock_formula2,
-                                          "wantedFormula2": mock_formula3}
-        self.formulas_handler.formulas["wantedFormula1"].wanted = True
-        self.formulas_handler.formulas["notWantedFormula"].wanted = False
-        self.formulas_handler.formulas["wantedFormula2"].wanted = True
+        self.formulas_handler.formulas = get_mock_formulas()
 
         result = self.formulas_handler.get_wanted_formulas()
 
-        self.assertEquals(result, [mock_formula1, mock_formula3])
+        self.assertEquals(result, [self.formulas_handler.formulas["wantedFormula1"],
+                                   self.formulas_handler.formulas["wantedFormula2"]])
 
     def test_get_all_needed_data_names(self):
-        mock_formula1 = Mock(spec=FormulaBlueprint)
-        mock_formula2 = Mock(spec=FormulaBlueprint)
-        mock_formula3 = Mock(spec=FormulaBlueprint)
-
-        mock_formula1.wanted = True
-        mock_formula2.wanted = False
-        mock_formula3.wanted = True
-
-        mock_formula1.variables = {"variable1": Mock(), "variable2": Mock()}
-        mock_formula2.variables = {"variable2": Mock(), "variable3": Mock()}
-        mock_formula3.variables = {"variable2": Mock(), "variable4": Mock()}
-
-        self.formulas_handler.formulas = {"wantedFormula1": mock_formula1,
-                                          "notWantedFormula": mock_formula2,
-                                          "wantedFormula2": mock_formula3}
+        self.formulas_handler.formulas = get_mock_formulas()
 
         result = self.formulas_handler.get_needed_data_names()
 
         self.assertEquals(result, ["variable1", "variable2", "variable4"])
 
     def test_get_all_variable_names(self):
-        mock_formula1 = Mock(spec=FormulaBlueprint)
-        mock_formula2 = Mock(spec=FormulaBlueprint)
-        mock_formula3 = Mock(spec=FormulaBlueprint)
-
-        mock_formula1.variables = {"variable1": Mock(), "variable2": Mock()}
-        mock_formula2.variables = {"variable2": Mock(), "variable3": Mock()}
-        mock_formula3.variables = {"variable2": Mock(), "variable4": Mock()}
-
-        self.formulas_handler.formulas = {"wantedFormula1": mock_formula1,
-                                          "notWantedFormula": mock_formula2,
-                                          "wantedFormula2": mock_formula3}
+        self.formulas_handler.formulas = get_mock_formulas()
 
         result = self.formulas_handler.get_all_variable_names()
 
@@ -131,17 +115,11 @@ class TestFormulasHandler(unittest.TestCase):
         self.assertNotIn('__init__', result)
 
     def test_get_formula_by_name_with_valid_request(self):
-        mock_formula1 = Mock(spec=FormulaBlueprint)
-        mock_formula2 = Mock(spec=FormulaBlueprint)
-        mock_formula3 = Mock(spec=FormulaBlueprint)
-
-        self.formulas_handler.formulas = {"wantedFormula1": mock_formula1,
-                                          "notWantedFormula": mock_formula2,
-                                          "wantedFormula2": mock_formula3}
+        self.formulas_handler.formulas = get_mock_formulas()
 
         result = self.formulas_handler.get_formula_by_name("wantedFormula2")
 
-        self.assertEquals(mock_formula3, result)
+        self.assertEquals(self.formulas_handler.formulas["wantedFormula2"], result)
 
     def test_get_formula_by_name_with_invalid_request(self):
         result = self.formulas_handler.get_formula_by_name(None)
