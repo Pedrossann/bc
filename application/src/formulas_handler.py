@@ -21,6 +21,8 @@ class FormulasHandler:
     @switch_states {"formula_name": True/False}
     """
     def switches_wanted_formulas(self, switch_states):
+        if switch_states == {}:
+            raise ValueError("switch_states cannot be {}")
         for name in list(self.formulas.keys()):
             self.formulas[name].wanted = switch_states[name]
         self.excel_output.create_saving_structure(self.get_wanted_formulas())
@@ -41,14 +43,15 @@ class FormulasHandler:
     Loads all variables, that are needed for calculating all selected formulas.
     
     @return [String] - list of needed variable names.
+    TODO get_needed_data_names and get_all_variable_names are really similar
     """
-    def get_all_needed_data_names(self) -> [str]:
-        needed_data = []
+    def get_needed_data_names(self) -> [str]:
+        needed_data = set()
         for name in list(self.formulas.keys()):
             if self.formulas[name].wanted == True:
                 for variable in list(self.formulas[name].variables.keys()):
-                    needed_data.append(variable)
-        return needed_data
+                    needed_data.add(variable)
+        return sorted(list(needed_data))
 
     """
     @return [str] - all variable names.
@@ -64,9 +67,9 @@ class FormulasHandler:
     Creates all formulas from folder formulas.
     
     @frame CTkFrame - frame in which formula will be located.
-    @return [Formula] - created formulas.
+    @return {str: Formula} - created formulas.
     """
-    def create_formulas(self, frame) -> [FormulaBlueprint]:
+    def create_formulas(self, frame) -> {str: 'FormulaBlueprint'}:
         for formula_name in os.listdir("application\\src\\formulas"):
             if formula_name.endswith(".py") and not formula_name.startswith("__"):
                 module_name = "src.formulas." + formula_name[:-3]
@@ -115,7 +118,7 @@ class FormulasHandler:
         run = True
         row = 0
         while run:
-            output = self.excel_input.get_data(self.get_all_needed_data_names(), row)
+            output = self.excel_input.get_data(self.get_needed_data_names(), row)
             row += 1
             if output == None:
                 run = False

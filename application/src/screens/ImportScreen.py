@@ -54,19 +54,19 @@ class ImportScreen(ScreenBlueprint):
         no_needed_variables = [
             item
             for item in self.formulas_handler.get_all_variable_names()
-            if item not in self.formulas_handler.get_all_needed_data_names()
+            if item not in self.formulas_handler.get_needed_data_names()
         ]
         for variable in no_needed_variables:
             self.specific_variable_frame[variable]["frame"].pack_forget()
 
-        for variable in self.formulas_handler.get_all_needed_data_names():
+        for variable in self.formulas_handler.get_needed_data_names():
             self.specific_variable_frame[variable]["frame"].pack(pady=5)
 
     # Goes to next screen and runs necessary logic for it.
     # TODO change variable_info to variables_info
     def next_screen(self) -> None:
         variable_info = {}
-        for variable_name in self.formulas_handler.get_all_needed_data_names():
+        for variable_name in self.formulas_handler.get_needed_data_names():
             variable_info[variable_name] = {
                 "excel": self.specific_variable_frame[variable_name]["excel"].get(),
                 "coordinates": self.specific_variable_frame[variable_name][

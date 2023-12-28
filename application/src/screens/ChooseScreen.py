@@ -21,6 +21,7 @@ class ChooseScreen(ScreenBlueprint):
 
     """
     Gets the data(on = true/ off = false) of the switches and saves chosed formulas into the math handler.
+    @TODO check if some formula is selected
     """
     def get_states_of_formulas(self) -> None:
         states = {}
