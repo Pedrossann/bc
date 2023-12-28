@@ -1,6 +1,5 @@
 import unittest
-from unittest.mock import Mock, patch, ANY
-import customtkinter as ctk
+from unittest.mock import Mock, patch
 
 from application.src import FormulasHandler
 from application.src.blueprints import FormulaBlueprint
