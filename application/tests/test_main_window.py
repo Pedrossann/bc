@@ -39,6 +39,3 @@ class TestMainWindow(unittest.TestCase):
         self.assertEquals(self.app.excel_input, self.mock_excel_input.return_value)
         self.assertEquals(self.app.excel_output, self.mock_excel_output.return_value)
         self.assertEquals(self.app.formulas_handler, self.mock_formulas_handler.return_value)
-
-if __name__ == "__main__":
-    unittest.main()
