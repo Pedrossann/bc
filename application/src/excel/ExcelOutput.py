@@ -23,5 +23,5 @@ class ExcelOutput:
     # @file_name String - name of the file we want to save data to.
     def save_data(self, file_name: str) -> None:
         df = pd.DataFrame(self.data)
-        df.to_excel(os.getcwd() + f"/src/output/{file_name}.xlsx", index=False)
+        df.to_excel(os.getcwd() + f"/application/src/output/{file_name}.xlsx", index=False)
         self.data = {}

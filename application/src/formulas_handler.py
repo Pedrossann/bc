@@ -48,7 +48,7 @@ class FormulasHandler:
     def get_needed_data_names(self) -> [str]:
         needed_data = set()
         for name in list(self.formulas.keys()):
-            if self.formulas[name].wanted == True:
+            if self.formulas[name].wanted:
                 for variable in list(self.formulas[name].variables.keys()):
                     needed_data.add(variable)
         return sorted(list(needed_data))
@@ -57,11 +57,11 @@ class FormulasHandler:
     @return [str] - all variable names.
     """
     def get_all_variable_names(self) -> [str]:
-        variables = []
+        variables = set()
         for name in list(self.formulas.keys()):
             for variable in list(self.formulas[name].variables.keys()):
-                variables.append(variable)
-        return variables
+                variables.add(variable)
+        return sorted(list(variables))
 
     """
     Creates all formulas from folder formulas.
@@ -93,7 +93,7 @@ class FormulasHandler:
     """
     def get_formula_by_name(self, formula_name: str) -> str:
         for name in list(self.formulas.keys()):
-            if self.formulas[name] == formula_name:
+            if name == formula_name:
                 return self.formulas[formula_name]
         return None
 

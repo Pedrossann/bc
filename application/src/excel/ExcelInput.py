@@ -17,7 +17,7 @@ class ExcelInput:
         for variable_name in list(self.variables.keys()):
             self.excels[variable_name] = pd.read_excel(
                 os.getcwd()
-                + "\\src\\input\\"
+                + "\\application\\src\\input\\"
                 + self.variables[variable_name]["excel"]
                 + ".xlsx"
             )

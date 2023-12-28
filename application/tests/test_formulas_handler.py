@@ -67,8 +67,7 @@ class TestFormulasHandler(unittest.TestCase):
 
         self.assertEquals(result, [mock_formula1, mock_formula3])
 
-
-    def test_get_all_needed_variable_names(self):
+    def test_get_all_needed_data_names(self):
         mock_formula1 = Mock(spec=FormulaBlueprint)
         mock_formula2 = Mock(spec=FormulaBlueprint)
         mock_formula3 = Mock(spec=FormulaBlueprint)
@@ -89,8 +88,22 @@ class TestFormulasHandler(unittest.TestCase):
 
         self.assertEquals(result, ["variable1", "variable2", "variable4"])
 
+    def test_get_all_variable_names(self):
+        mock_formula1 = Mock(spec=FormulaBlueprint)
+        mock_formula2 = Mock(spec=FormulaBlueprint)
+        mock_formula3 = Mock(spec=FormulaBlueprint)
 
+        mock_formula1.variables = {"variable1": Mock(), "variable2": Mock()}
+        mock_formula2.variables = {"variable2": Mock(), "variable3": Mock()}
+        mock_formula3.variables = {"variable2": Mock(), "variable4": Mock()}
 
+        self.formulas_handler.formulas = {"wantedFormula1": mock_formula1,
+                                          "notWantedFormula": mock_formula2,
+                                          "wantedFormula2": mock_formula3}
+
+        result = self.formulas_handler.get_all_variable_names()
+
+        self.assertEquals(result, ["variable1", "variable2", "variable3",  "variable4"])
 
     @patch("os.listdir")
     @patch('importlib.import_module')
@@ -116,4 +129,17 @@ class TestFormulasHandler(unittest.TestCase):
         mock_valid_class.assert_called_once_with(mock_frame)
         self.assertNotIn('InvalidFormula', result)
         self.assertNotIn('__init__', result)
+
+    def test_get_formula_by_name_with_valid_request(self):
+        mock_formula1 = Mock(spec=FormulaBlueprint)
+        mock_formula2 = Mock(spec=FormulaBlueprint)
+        mock_formula3 = Mock(spec=FormulaBlueprint)
+
+        self.formulas_handler.formulas = {"wantedFormula1": mock_formula1,
+                                          "notWantedFormula": mock_formula2,
+                                          "wantedFormula2": mock_formula3}
+
+        result = self.formulas_handler.get_formula_by_name("wantedFormula2")
+
+        self.assertEquals(mock_formula3, result)
 
