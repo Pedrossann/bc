@@ -101,6 +101,7 @@ class FormulasHandler:
     Gets all excel files in inport folder.
     
     @return [String] - Names of the files without ".xlsx".
+    TODO - maybe reference excel and not search 
     """
     def get_import_excel_names(self) -> [str]:
         excel_names = []

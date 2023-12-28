@@ -1,5 +1,5 @@
 import unittest
-from unittest.mock import Mock, patch
+from unittest.mock import Mock, patch, ANY
 import customtkinter as ctk
 
 from application.src import FormulasHandler
@@ -103,7 +103,7 @@ class TestFormulasHandler(unittest.TestCase):
 
         result = self.formulas_handler.get_all_variable_names()
 
-        self.assertEquals(result, ["variable1", "variable2", "variable3",  "variable4"])
+        self.assertEquals(result, ["variable1", "variable2", "variable3", "variable4"])
 
     @patch("os.listdir")
     @patch('importlib.import_module')
@@ -143,3 +143,39 @@ class TestFormulasHandler(unittest.TestCase):
 
         self.assertEquals(mock_formula3, result)
 
+    def test_get_formula_by_name_with_invalid_request(self):
+        result = self.formulas_handler.get_formula_by_name(None)
+
+        self.assertEquals(None, result)
+
+    @patch("os.listdir")
+    def test_get_import_excel_names(self, mock_listdir):
+        mock_listdir.return_value = ["Test1.xlsx", "Test2.xlsx", "Invalid"]
+
+        result = self.formulas_handler.get_import_excel_names()
+
+        self.assertEquals(result, ["Test1", "Test2"])
+
+    def test_calculation(self):
+        self.formulas_handler.excel_input.get_data.side_effect = [
+            {'var1': 1, 'var2': 2, 'var3': 3},
+            {'var1': 4, 'var2': 5, 'var3': 6},
+            None
+        ]
+
+        mock_formula1 = Mock()
+        mock_formula1.variables = {'var1': None, 'var2': None}
+        mock_formula1.name = "Formula1"
+
+        mock_formula2 = Mock()
+        mock_formula2.variables = {'var1': None, 'var3': None}
+        mock_formula2.name = "Formula2"
+
+        self.formulas_handler.get_wanted_formulas = Mock(return_value=[mock_formula1, mock_formula2])
+
+        self.formulas_handler.calculation("TestOutputFile")
+
+        self.formulas_handler.excel_output.save_data.assert_called_once()
+        self.assertEquals(mock_formula1.try_calculate.call_count, 2)
+        self.assertEquals(mock_formula2.try_calculate.call_count, 2)
+        self.assertEquals(self.formulas_handler.excel_output.add_calculated_data.call_count, 2)
